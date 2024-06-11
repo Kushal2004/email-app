@@ -1,5 +1,8 @@
-const cors = require('cors');
+const bodyParser = require('body-parser');
 
-const corsMiddleware = cors();
+const bodyParserMiddleware = [
+  bodyParser.urlencoded({ extended: true }),
+  bodyParser.json()
+];
 
-module.exports = corsMiddleware;
+module.exports = bodyParserMiddleware;

@@ -1,103 +1,12 @@
+<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Send Email with Attachment</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 50px;
-    }
-    form {
-      max-width: 400px;
-      margin: auto;
-    }
-    div {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-    }
-    input[type="email"],
-    input[type="text"],
-    textarea {
-      width: 100%;
-      padding: 8px;
-      box-sizing: border-box;
-    }
-    button {
-      padding: 10px 15px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    #message {
-      margin-top: 20px;
-      font-weight: bold;
-    }
-  </style>
+  <title>Email App</title>
 </head>
 <body>
-  <h1>Send Email with Attachment</h1>
-  <form id="emailForm">
-    <div>
-      <label for="recipientEmail">Recipient Email:</label>
-      <input type="email" id="recipientEmail" name="recipientEmail" required>
-    </div>
-    <div>
-      <label for="subject">Subject:</label>
-      <input type="text" id="subject" name="subject" required>
-    </div>
-    <div>
-      <label for="text">Message Text:</label>
-      <textarea id="text" name="text" rows="4" required></textarea>
-    </div>
-    <div>
-      <label for="attachment">Attachment:</label>
-      <input type="file" id="attachment" name="attachment">
-    </div>
-    <button type="submit">Send Email</button>
-  </form>
-  <p id="message"></p>
-
-  <script>
-    document.getElementById('emailForm').addEventListener('submit', async function(event) {
-      event.preventDefault();
-      const formData = new FormData();
-      formData.append('recipientEmail', document.getElementById('recipientEmail').value);
-      formData.append('subject', document.getElementById('subject').value);
-      formData.append('text', document.getElementById('text').value);
-      const attachment = document.getElementById('attachment').files[0];
-      if (attachment) {
-        formData.append('attachment', attachment);
-      }
-
-      try {
-        const response = await fetch('http://localhost:5000/send-email', {
-          method: 'POST',
-          body: formData
-        });
-
-        const messageElement = document.getElementById('message');
-        if (response.ok) {
-          messageElement.textContent = 'Email sent successfully!';
-          messageElement.style.color = 'green';
-        } else {
-          messageElement.textContent = 'Failed to send email.';
-          messageElement.style.color = 'red';
-        }
-      } catch (error) {
-        document.getElementById('message').textContent = 'An error occurred.';
-        document.getElementById('message').style.color = 'red';
-        console.error(error);
-      }
-    });
-  </script>
+  <h1>Welcome to the Email App</h1>
 </body>
 </html>
