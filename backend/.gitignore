@@ -1,6 +1,9 @@
 /node_modules
 /uploads
+
 # dotenv environment variables file
 .env
+
+# Credentials and token files
 credentials.json
 token.json
