@@ -1,11 +1,13 @@
 const path = require('path');
 const fs = require('fs');
 const { google } = require('googleapis');
+const http = require('http'); // Import the http module
 const { uploadFile } = require('../utils/driveHelper');
 const { sendEmail } = require('../utils/mailHelper');
 
 const CREDENTIALS_PATH = path.join(__dirname, '..', 'credentials.json');
 const TOKEN_PATH = path.join(__dirname, '..', 'token.json');
+const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
 
 let oAuth2Client;
 fs.readFile(CREDENTIALS_PATH, (err, content) => {
@@ -27,8 +29,8 @@ function getAccessToken(oAuth2Client) {
   console.log('Authorize this app by visiting this url:', authUrl);
   const server = http.createServer((req, res) => {
     if (req.url.startsWith('/oauth2callback')) {
-      const query = url.parse(req.url, true).query;
-      const code = query.code;
+      const query = new URL(req.url, 'http://localhost:3000').searchParams;
+      const code = query.get('code');
       oAuth2Client.getToken(code, (err, token) => {
         if (err) {
           console.error('Error retrieving access token', err);

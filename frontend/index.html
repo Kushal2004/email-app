@@ -41,10 +41,30 @@
       margin-top: 20px;
       font-weight: bold;
     }
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 4px solid #3498db;
+      width: 20px;
+      height: 20px;
+      -webkit-animation: spin 2s linear infinite; /* Safari */
+      animation: spin 2s linear infinite;
+    }
+
+    /* Safari */
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
-  <h1>Send Email with Attachment</h1>
+  <h1 align="center">Send Email with Attachment</h1>
   <form id="emailForm">
     <div>
       <label for="recipientEmail">Recipient Email:</label>
@@ -62,13 +82,14 @@
       <label for="attachment">Attachment:</label>
       <input type="file" id="attachment" name="attachment">
     </div>
-    <button type="submit">Send Email</button>
+    <button type="submit">Send Email <span class="loader" id="loader" style="display: none;"></span></button>
   </form>
   <p id="message"></p>
 
   <script>
     document.getElementById('emailForm').addEventListener('submit', async function(event) {
-      event.preventDefault();
+      event.preventDefault(); // Prevent default form submission behavior
+      
       const formData = new FormData();
       formData.append('recipientEmail', document.getElementById('recipientEmail').value);
       formData.append('subject', document.getElementById('subject').value);
@@ -77,13 +98,18 @@
       if (attachment) {
         formData.append('attachment', attachment);
       }
-
+  
+      const loader = document.getElementById('loader');
+      loader.style.display = 'inline-block'; // Display the loader while sending email
+  
       try {
         const response = await fetch('http://localhost:5000/api/email/send', {
           method: 'POST',
           body: formData
         });
-
+  
+        loader.style.display = 'none'; // Hide the loader after receiving the response
+  
         const messageElement = document.getElementById('message');
         if (response.ok) {
           messageElement.textContent = 'Email sent successfully!';
@@ -93,11 +119,13 @@
           messageElement.style.color = 'red';
         }
       } catch (error) {
+        loader.style.display = 'none'; // Hide the loader if an error occurs
         document.getElementById('message').textContent = 'An error occurred.';
         document.getElementById('message').style.color = 'red';
         console.error(error);
       }
     });
   </script>
+  
 </body>
 </html>
