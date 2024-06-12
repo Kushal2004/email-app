@@ -39,13 +39,50 @@ EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-email-password
 PORT=5000
 ```
-2. Start the application
+2. Add Google Drive credentials:
+Create a credentials.json file in the root of the backend directory and add the following:
+```bash
+    {
+    "web": {
+        "client_id": "",
+        "project_id": "",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "",
+        "redirect_uris": [
+            "http://localhost:3000/oauth2callback/"
+        ]
+    }
+
+```
+
+3. Start the application
 ```bash
  node app.js
 ```
 
 ### Running the Application with Docker
-1. Build and run the Docker container:
+
+1. docker-compose.yml
+The `docker-compose.yml` sets up the Docker services:
+
+```bash
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - EMAIL_USER=your-email@gmail.com
+      - EMAIL_PASS=your-email-password
+      - PORT=5000
+    volumes:
+      - .:/usr/src/app
+
+```
+2. Build and run the Docker container:
 
 ```bash
 docker-compose up --build
