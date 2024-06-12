@@ -9,7 +9,6 @@ This Node.js application allows users to send emails with attachments. If the at
 - [API Endpoints](#api-endpoints)
 - [Docker Setup](#docker-setup)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Installation
 
@@ -21,3 +20,8 @@ This Node.js application allows users to send emails with attachments. If the at
 ```bash
 git clone https://github.com/yourusername/email-attachment-service.git
 cd email-attachment-service/backend
+
+### Install Dependencies
+
+```bash
+npm install
