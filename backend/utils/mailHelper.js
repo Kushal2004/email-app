@@ -1,7 +1,7 @@
 const fs = require('fs');
 const nodemailer = require('nodemailer');
 
-function sendEmail(recipientEmail, subject, text, attachment, res) {
+async function sendEmail(recipientEmail, subject, text, attachment) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -18,20 +18,23 @@ function sendEmail(recipientEmail, subject, text, attachment, res) {
     attachments: attachment ? [{ path: attachment.path, filename: attachment.originalname }] : []
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-      res.status(500).send('Error sending email');
-    } else {
-      console.log('Email sent: ' + info.response);
-      res.send('Email sent successfully');
-      if (attachment) {
-        fs.unlink(attachment.path, (err) => {
-          if (err) console.error('Error deleting uploaded file:', err);
-        });
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log('Error sending email:', error);
+        reject(Object.assign(new Error('Error sending email'), { responseCode: error.responseCode }));
+      } else {
+        console.log('Email sent: ' + info.response);
+        if (attachment) {
+          fs.unlink(attachment.path, (err) => {
+            if (err) console.error('Error deleting uploaded file:', err);
+          });
+        }
+        resolve('Email sent successfully');
       }
-    }
+    });
   });
 }
 
 module.exports = { sendEmail };
+    

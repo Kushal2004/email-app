@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const { google } = require('googleapis');
-const http = require('http'); // Import the http module
+const http = require('http');
 const { uploadFile } = require('../utils/driveHelper');
 const { sendEmail } = require('../utils/mailHelper');
 
@@ -50,10 +50,18 @@ function getAccessToken(oAuth2Client) {
 }
 
 async function sendEmailWithAttachment(recipientEmail, subject, text, attachment, res) {
-  if (attachment && path.extname(attachment.originalname) === '.zip') {
-    await uploadFile(oAuth2Client, attachment.path, recipientEmail, subject, text, res);
-  } else {
-    sendEmail(recipientEmail, subject, text, attachment, res);
+  try {
+    await sendEmail(recipientEmail, subject, text, attachment);
+    res.status(200).send('Email sent successfully');
+  } catch (error) {
+    if (error.responseCode === 552) {
+      // Handle blocked attachment by uploading to Google Drive
+      console.error('Attachment blocked, uploading to Google Drive');
+      await uploadFile(oAuth2Client, attachment.path, recipientEmail, subject, text, res);
+    } else {
+      console.error('Error sending email with attachment:', error);
+      res.status(500).send('Failed to send email.');
+    }
   }
 }
 
