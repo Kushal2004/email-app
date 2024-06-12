@@ -59,12 +59,27 @@ docker-compose up --build
 
 ### Send Email with Attachment
 
-URL: /api/email/send
-Method: POST
-Description: Sends an email with an attachment. If the attachment is blocked, it uploads the file to Google Drive and sends a link.
-Request Body:
-    recipientEmail (string): The recipient's email address.
-    subject (string): The subject of the email.
-    text (string): The body of the email.
-    attachment (file): The attachment file.
+This API endpoint allows you to send an email with an attachment. If the attachment is blocked, it uploads the file to Google Drive and sends a link to the recipient.
 
+### Endpoint
+
+- **URL:** `/api/email/send`
+- **Method:** `POST`
+- **Description:** Sends an email with an attachment. If the attachment is blocked, it uploads the file to Google Drive and sends a link.
+  
+### Request Body Parameters
+
+- `recipientEmail` (string): The recipient's email address.
+- `subject` (string): The subject of the email.
+- `text` (string): The body of the email.
+- `attachment` (file): The attachment file.
+
+### Example Request
+
+```bash
+curl -X POST http://localhost:5000/api/email/send \
+  -F "recipientEmail=example@example.com" \
+  -F "subject=Test Email" \
+  -F "text=This is a test email" \
+  -F "attachment=@path/to/your/file.zip"
+  ```
