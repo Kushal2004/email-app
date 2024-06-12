@@ -12,13 +12,14 @@ This Node.js application allows users to send emails with attachments. If the at
 
 ## Installation
 
-### Prerequisites
+ ### Prerequisites
 - [Node.js](https://nodejs.org/) (v14 or higher)
 - [Docker](https://www.docker.com/) (optional, for containerization)
 
-### Clone the Repository
+ ### Clone the Repository
 ```bash
-git clone https://github.com/yourusername/email-attachment-service.git
+git clone https://github.com/Kushal2004/email-app.git
+
 cd email-attachment-service/backend
 ```
 
@@ -28,8 +29,8 @@ cd email-attachment-service/backend
 npm install
 ```
 
-### Usage
-## Running the Application Locally
+## Usage
+### Running the Application Locally
 1. Set up environment variables:
 Create a .env file in the root of the backend directory and add the following:
 
@@ -43,7 +44,7 @@ PORT=5000
  node app.js
 ```
 
-## Running the Application with Docker
+### Running the Application with Docker
 1. Build and run the Docker container:
 
 ```bash
@@ -51,3 +52,19 @@ docker-compose up --build
 
 ```
 2. The application will be accessible at http://localhost:5000.
+
+
+## API Endpoints
+
+
+### Send Email with Attachment
+
+URL: /api/email/send
+Method: POST
+Description: Sends an email with an attachment. If the attachment is blocked, it uploads the file to Google Drive and sends a link.
+Request Body:
+    recipientEmail (string): The recipient's email address.
+    subject (string): The subject of the email.
+    text (string): The body of the email.
+    attachment (file): The attachment file.
+
